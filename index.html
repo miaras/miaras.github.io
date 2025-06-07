@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat with AI</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; background-color: #f0f2f5; }
+        #chat-window { flex-grow: 1; overflow-y: scroll; padding: 20px; }
+        #chat-window .message-block { margin-bottom: 12px; }
+        #chat-window .player-name { font-weight: bold; margin-bottom: 4px; }
+        #chat-window .message-bubble { display: inline-block; padding: 8px 12px; border-radius: 18px; max-width: 70%; }
+        #chat-window .human-message .message-bubble { background-color: #0084ff; color: white; }
+        #chat-window .llm-message .message-bubble { background-color: #e4e6eb; color: #050505; }
+        #chat-window .announcement { text-align: center; color: grey; font-size: 0.8em; padding: 10px 0; }
+        #input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; background-color: white; }
+        #messageText { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 18px; outline: none; }
+        #sendButton { background-color: #0084ff; color: white; border: none; padding: 0 15px; margin-left: 10px; border-radius: 18px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1 id="welcome-header" style="text-align: center; padding: 10px; margin: 0; background-color: white;">Connecting...</h1>
+    <div id="chat-window"></div>
+    <div id="input-area">
+        <input type="text" id="messageText" placeholder="Type a message..." autocomplete="off" disabled/>
+        <button id="sendButton" disabled>Send</button>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById("chat-window");
+        const messageText = document.getElementById("messageText");
+        const sendButton = document.getElementById("sendButton");
+        const header = document.getElementById("welcome-header");
+
+        // clientId will be set by the server
+        let clientId = null;
+
+        // MODIFIED: The WebSocket URL is now generic
+        const ws = new WebSocket(`ws://localhost:8000/ws`);
+
+        ws.onmessage = (event) => {
+            const messageData = JSON.parse(event.data);
+            
+            // --- NEW: Handle ID assignment from server ---
+            if (messageData.type === "assign_id") {
+                clientId = messageData.id;
+                header.textContent = `Welcome, ${clientId}`;
+                // Enable the input field now that we have an ID
+                messageText.disabled = false;
+                sendButton.disabled = false;
+                displayAnnouncement("You have joined the chat. Say hello!");
+            } 
+            else if (messageData.type === "new_message") {
+                displayMessage(messageData.player, messageData.text);
+            } 
+            else if (messageData.type === "announcement") {
+                displayAnnouncement(messageData.text);
+            }
+            else if (messageData.type === "error") {
+                alert(messageData.message);
+                messageText.disabled = true;
+                sendButton.disabled = true;
+            }
+        };
+
+        function sendMessage() {
+            // Only send if we have a clientId and there's text
+            if (clientId && messageText.value.trim() !== "") {
+                ws.send(JSON.stringify({ type: "chat", text: messageText.value }));
+                messageText.value = "";
+            }
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+        messageText.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        function displayMessage(playerName, text) {
+            const isOurMessage = (playerName === clientId);
+            const messageBlock = document.createElement("div");
+            messageBlock.className = "message-block";
+            
+            if (playerName.toLowerCase().includes("player")) {
+                 // Align our messages to the right, others to the left
+                messageBlock.style.textAlign = isOurMessage ? "right" : "left";
+            }
+            
+            // Differentiate between human and bot styles
+            if (playerName.toLowerCase().includes("player") && !isOurMessage) {
+                 messageBlock.classList.add("llm-message");
+            } else if (isOurMessage) {
+                 messageBlock.classList.add("human-message");
+            }
+
+            const nameElement = document.createElement("div");
+            nameElement.className = "player-name";
+            nameElement.textContent = playerName;
+
+            const bubbleElement = document.createElement("div");
+            bubbleElement.className = "message-bubble";
+            bubbleElement.textContent = text;
+            
+            messageBlock.appendChild(nameElement);
+            messageBlock.appendChild(bubbleElement);
+            chatWindow.appendChild(messageBlock);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        function displayAnnouncement(text) {
+            const announcementElement = document.createElement("div");
+            announcementElement.className = "announcement";
+            announcementElement.textContent = text;
+            chatWindow.appendChild(announcementElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    </script>
+</body>
+</html>
