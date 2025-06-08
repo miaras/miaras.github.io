@@ -270,7 +270,8 @@
         const backend = "https://9362-218-55-119-142.ngrok-free.app";
 
         // MODIFIED: The WebSocket URL is now generic
-        const ws = new WebSocket(`ws://${backend}:8000/ws`);
+        const ws = new WebSocket(`wss://${backend}/ws`);
+
 
         ws.onmessage = (event) => {
             const messageData = JSON.parse(event.data);
