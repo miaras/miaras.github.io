@@ -22,18 +22,47 @@
         
         #chat-window .message-block {
             margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        #chat-window .message-block.human-message {
+            flex-direction: row-reverse;
+        }
+        
+        #chat-window .character-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e4e6eb;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #chat-window .human-message .character-avatar {
+            border-color: #0084ff;
+        }
+        
+        #chat-window .message-content {
+            display: flex;
+            flex-direction: column;
+            max-width: calc(100% - 65px);
+            min-width: 0;
         }
         
         #chat-window .player-name {
             font-weight: bold;
             margin-bottom: 4px;
+            font-size: 14px;
         }
         
         #chat-window .message-bubble {
             display: inline-block;
             padding: 8px 12px;
             border-radius: 18px;
-            max-width: 70%;
+            word-wrap: break-word;
         }
         
         #chat-window .human-message .message-bubble {
@@ -51,6 +80,8 @@
             color: grey;
             font-size: 0.8em;
             padding: 10px 0;
+            margin: 0 auto;
+            max-width: 80%;
         }
         
         #input-area {
@@ -90,6 +121,44 @@
         
         #voting-panel.active {
             display: block;
+        }
+        /* Timer Styles */
+        
+        #timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        #timer-display.voting {
+            background-color: #dc3545;
+            animation: pulse-red 1s infinite;
+        }
+        
+        #timer-display.next-vote {
+            background-color: #28a745;
+        }
+        
+        @keyframes pulse-red {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
         }
         
         #voting-panel h3 {
@@ -222,17 +291,43 @@
             background-color: #28a745;
             color: white;
         }
+        /* Mobile responsiveness */
+        
+        @media (max-width: 768px) {
+            #chat-window .character-avatar {
+                width: 35px;
+                height: 35px;
+            }
+            #chat-window .message-content {
+                max-width: calc(100% - 50px);
+            }
+            #chat-window .player-name {
+                font-size: 12px;
+            }
+            #timer-display {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 14px;
+                min-width: 150px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <h1 id="welcome-header" style="text-align: center; padding: 10px; margin: 0; background-color: white;">Connecting...</h1>
 
+    <!-- Timer Display -->
+    <div id="timer-display" style="display: none;">
+        <div id="timer-text">Next vote in: 20s</div>
+    </div>
+
     <!-- Voting Panel -->
     <div id="voting-panel">
         <h3>🗳️ Voting Phase</h3>
         <div class="voting-controls">
-            <button id="start-vote-btn" class="vote-button">Start Voting</button>
+            <button id="start-vote-btn" class="vote-button" style="display: none;">Start Voting</button>
             <button id="end-vote-btn" class="vote-button end" style="display: none;">End Voting</button>
         </div>
         <div id="voting-status"></div>
@@ -259,6 +354,24 @@
         const votingStatus = document.getElementById("voting-status");
         const playerList = document.getElementById("player-list");
         const votingResults = document.getElementById("voting-results");
+
+        // Timer elements
+        const timerDisplay = document.getElementById("timer-display");
+        const timerText = document.getElementById("timer-text");
+
+        // Character images
+        const characterImages = [
+            'static/images/maria02.png',
+            'static/images/maria03.png',
+            'static/images/maria04.png',
+            'static/images/maria05.png',
+            'static/images/maria06.png',
+            'static/images/maria08.png',
+            'static/images/maria09.png'
+        ];
+
+        // Store character assignments for each player
+        const playerCharacters = new Map();
 
         // clientId will be set by the server
         let clientId = null;
@@ -298,6 +411,10 @@
                 handleVotingEnded(messageData);
             } else if (messageData.type === "vote_cast") {
                 displayAnnouncement(messageData.message);
+            } else if (messageData.type === "voting_timer") {
+                updateVotingTimer(messageData);
+            } else if (messageData.type === "next_vote_timer") {
+                updateNextVoteTimer(messageData);
             }
         };
 
@@ -334,12 +451,19 @@
             }));
         });
 
+        function getCharacterForPlayer(playerName) {
+            // If this player doesn't have a character assigned, assign one randomly
+            if (!playerCharacters.has(playerName)) {
+                const randomCharacter = characterImages[Math.floor(Math.random() * characterImages.length)];
+                playerCharacters.set(playerName, randomCharacter);
+            }
+            return playerCharacters.get(playerName);
+        }
+
         function displayMessage(playerName, text) {
             const isOurMessage = (playerName === clientId);
             const messageBlock = document.createElement("div");
             messageBlock.className = "message-block";
-
-            messageBlock.style.textAlign = isOurMessage ? "right" : "left";
 
             // Differentiate between human and bot styles
             if (!isOurMessage) {
@@ -347,6 +471,21 @@
             } else if (isOurMessage) {
                 messageBlock.classList.add("human-message");
             }
+
+            // Create character avatar
+            const avatarElement = document.createElement("img");
+            avatarElement.className = "character-avatar";
+            avatarElement.src = getCharacterForPlayer(playerName);
+            avatarElement.alt = `${playerName}'s character`;
+
+            // Handle image loading errors
+            avatarElement.onerror = () => {
+                avatarElement.src = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="%23ddd"/><text x="25" y="30" text-anchor="middle" fill="%23666" font-size="12">?</text></svg>';
+            };
+
+            // Create message content container
+            const messageContent = document.createElement("div");
+            messageContent.className = "message-content";
 
             const nameElement = document.createElement("div");
             nameElement.className = "player-name";
@@ -356,8 +495,12 @@
             bubbleElement.className = "message-bubble";
             bubbleElement.textContent = text;
 
-            messageBlock.appendChild(nameElement);
-            messageBlock.appendChild(bubbleElement);
+            messageContent.appendChild(nameElement);
+            messageContent.appendChild(bubbleElement);
+
+            messageBlock.appendChild(avatarElement);
+            messageBlock.appendChild(messageContent);
+
             chatWindow.appendChild(messageBlock);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
@@ -378,9 +521,9 @@
             // Show voting panel
             votingPanel.classList.add("active");
 
-            // Update button states
+            // Update button states (keep them hidden since voting is automatic now)
             startVoteBtn.style.display = "none";
-            endVoteBtn.style.display = "inline-block";
+            endVoteBtn.style.display = "none";
 
             // Update status
             votingStatus.innerHTML = `<strong>${data.message}</strong><br>Click on a player to vote for them as an AI.`;
@@ -391,6 +534,13 @@
             // Create player cards
             createPlayerCards();
 
+            // Update timer display
+            timerDisplay.className = "voting";
+            timerDisplay.style.display = "block";
+            if (data.time_left) {
+                timerText.textContent = `Voting ends in: ${data.time_left}s`;
+            }
+
             // Display announcement
             displayAnnouncement(data.message);
         }
@@ -398,8 +548,8 @@
         function handleVotingEnded(data) {
             votingActive = false;
 
-            // Update button states
-            startVoteBtn.style.display = "inline-block";
+            // Update button states (keep them hidden since voting is automatic now)
+            startVoteBtn.style.display = "none";
             endVoteBtn.style.display = "none";
 
             // Update status
@@ -410,6 +560,12 @@
 
             // Display results
             displayVotingResults(data.results);
+
+            // Update timer display for next vote
+            timerDisplay.className = "next-vote";
+            if (data.next_vote_in) {
+                timerText.textContent = `Next vote in: ${data.next_vote_in}s`;
+            }
 
             // Display announcement
             displayAnnouncement(data.message);
@@ -494,6 +650,35 @@
                 votingResults.appendChild(resultItem);
             });
         }
+
+        function updateVotingTimer(data) {
+            if (data.time_left !== undefined) {
+                timerDisplay.className = "voting";
+                timerDisplay.style.display = "block";
+                timerText.textContent = `Voting ends in: ${data.time_left}s`;
+
+                // Add urgent styling when time is running out
+                if (data.time_left <= 10) {
+                    timerDisplay.style.animation = "pulse-red 0.5s infinite";
+                } else {
+                    timerDisplay.style.animation = "pulse-red 1s infinite";
+                }
+            }
+        }
+
+        function updateNextVoteTimer(data) {
+            if (data.time_left !== undefined) {
+                timerDisplay.className = "next-vote";
+                timerDisplay.style.display = "block";
+                timerDisplay.style.animation = "none";
+                timerText.textContent = `Next vote in: ${data.time_left}s`;
+            }
+        }
+
+        // Show timer when connected
+        ws.onopen = () => {
+            // Timer will be shown automatically when we receive timer updates
+        };
     </script>
 </body>
 

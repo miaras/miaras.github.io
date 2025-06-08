@@ -55,6 +55,10 @@ MAX_HUMAN_PLAYERS = 10
 # Voting system
 voting_active = False
 votes = {}  # {voter_name: voted_for_name}
+voting_time_left = 0  # Seconds left in current voting round
+next_vote_time = 20  # Seconds until next voting round starts
+VOTING_DURATION = 10  # Duration of each voting round in seconds
+VOTING_INTERVAL = 20  # Interval between voting rounds in seconds
 all_players = []  # List of all player names (humans + AIs)
 human_players = []  # List of human player names
 ai_players = []  # List of AI player names
@@ -120,10 +124,11 @@ async def get_llm_response(persona: dict, history: List[str]) -> str:
 
     # The prompt is simpler now, focused on just continuing the conversation
     prompt = f"""
-    You are a chatbot persona in a group chat with AI and one human. Do NOT reveal you are an AI. Don't use emojis.
+    You are a chatbot persona in a group chat with AIs and humans. Do NOT reveal you are an AI. Don't use emojis.
     Don't capitalize text. keep your messages short, shorter than 8 words.
-    Your goal is to find who the other human is. 
+    Your goal is to find who the other AIs are. 
     Occasionally make grammar mistakes, send short messages, and capitalize things occasionally but not always. 
+    Your name is {persona['name']}.
     
     This is the recent chat history:
     {''.join(history[-10:])}  # Use the last 10 messages for context
@@ -170,10 +175,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Start the AI conversation loop when the server starts
+# Start the AI conversation loop and voting timer when the server starts
 @app.on_event("startup")
 async def startup_event():
     asyncio.create_task(ai_conversation_loop())
+    asyncio.create_task(voting_timer_loop())
 
 
 async def trigger_llm_response(is_human_initiated=True):
@@ -224,12 +230,58 @@ async def ai_conversation_loop():
             if random.random() < 0.7:
                 await trigger_llm_response(is_human_initiated=False)
 
+async def voting_timer_loop():
+    """Background task that manages voting rounds and countdown timers."""
+    global voting_active, voting_time_left, next_vote_time
+    
+    while True:
+        await asyncio.sleep(1)  # Update every second
+        
+        # Only run timers if there are active connections
+        if not manager.active_connections:
+            continue
+            
+        if voting_active:
+            # Handle voting countdown
+            voting_time_left -= 1
+            
+            # Broadcast voting timer update 
+            timer_msg = {
+                "type": "voting_timer", 
+                "time_left": voting_time_left,
+                "message": f"Voting ends in {voting_time_left} seconds!"
+            }
+            await manager.broadcast(timer_msg)
+            
+            # End voting when time runs out
+            if voting_time_left <= 0:
+                result = end_voting()
+                await manager.broadcast(result)
+                
+        else:
+            # Handle next vote countdown
+            next_vote_time -= 1
+            
+            # Broadcast next vote timer 
+            timer_msg = {
+                "type": "next_vote_timer",
+                "time_left": next_vote_time,
+                "message": f"Next voting round in {next_vote_time} seconds"
+            }
+            await manager.broadcast(timer_msg)
+            
+            # Start voting when countdown reaches zero
+            if next_vote_time <= 0:
+                result = start_voting()
+                await manager.broadcast(result)
+
 def start_voting():
     """Initiates the voting phase."""
-    global voting_active, votes
+    global voting_active, votes, voting_time_left
     voting_active = True
     votes = {}
-    return {"type": "voting_started", "players": all_players, "message": "Voting has started! Vote for who you think are the AIs."}
+    voting_time_left = VOTING_DURATION
+    return {"type": "voting_started", "players": all_players, "time_left": voting_time_left, "message": f"Voting has started! You have {VOTING_DURATION} seconds to vote for who you think are the AIs."}
 
 def cast_vote(voter_name: str, voted_for_name: str):
     """Records a vote."""
@@ -241,8 +293,9 @@ def cast_vote(voter_name: str, voted_for_name: str):
 
 def end_voting():
     """Ends voting and reveals results."""
-    global voting_active
+    global voting_active, next_vote_time
     voting_active = False
+    next_vote_time = VOTING_INTERVAL  # Reset timer for next voting round
     
     # Count votes
     vote_counts = {}
@@ -268,7 +321,8 @@ def end_voting():
     return {
         "type": "voting_ended", 
         "results": results,
-        "message": "Voting has ended! Here are the results:"
+        "next_vote_in": next_vote_time,
+        "message": f"Voting has ended! Next voting round in {next_vote_time} seconds."
     }
 
 @app.websocket("/ws")
@@ -310,30 +364,18 @@ async def websocket_endpoint(websocket: WebSocket):
             if message.get("type") == "chat":
                 text = message["text"]
                 
-                # Handle special voting commands
-                if text.lower().startswith("/vote"):
-                    # Check if it's a vote start command
-                    if text.lower() == "/vote start":
-                        if player_id in human_players:  # Only humans can start voting
-                            result = start_voting()
-                            await manager.broadcast(result)
-                        continue
-                    elif text.lower() == "/vote end":
-                        if player_id in human_players:  # Only humans can end voting
-                            result = end_voting()
-                            await manager.broadcast(result)
-                        continue
-                    else:
-                        # Handle voting for a specific player: /vote PlayerName
-                        vote_parts = text.split(" ", 1)
-                        if len(vote_parts) == 2:
-                            voted_for = vote_parts[1].strip()
-                            if voted_for in all_players:
-                                result = cast_vote(player_id, voted_for)
-                                await websocket.send_text(json.dumps(result))
-                            else:
-                                await websocket.send_text(json.dumps({"type": "error", "message": "Player not found."}))
-                        continue
+                # Handle voting commands (only for casting votes now)
+                if text.lower().startswith("/vote "):
+                    # Handle voting for a specific player: /vote PlayerName
+                    vote_parts = text.split(" ", 1)
+                    if len(vote_parts) == 2:
+                        voted_for = vote_parts[1].strip()
+                        if voted_for in all_players:
+                            result = cast_vote(player_id, voted_for)
+                            await websocket.send_text(json.dumps(result))
+                        else:
+                            await websocket.send_text(json.dumps({"type": "error", "message": "Player not found."}))
+                    continue
                 
                 # Regular chat message
                 human_message = {"type": "new_message", "player": player_id, "text": text}
