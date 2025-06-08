@@ -161,6 +161,15 @@ class ConnectionManager:
 app = FastAPI()
 manager = ConnectionManager()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://yourusername.github.io"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Start the AI conversation loop when the server starts
 @app.on_event("startup")
 async def startup_event():
