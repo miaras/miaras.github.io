@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Miara Sung</title>
+    <?php include 'header.php'; ?>
+</head>
+<body>
+<main>
+<div class="window">
+<ul>
+            <li><a href="The Poetry of Computer Science, the Computer Science of Poetry.pdf">The Poetry of Computer Science, the Computer Science of Poetry</a> (2017)</li>
+
+        <ul>
+            This is a collection of notes I wrote when I was teaching CS198-97 Philosophy of Computation at UC Berkeley in Fall 2017. The class is designed to build up intuition about what computation is, how computation is ontological, and culminates in a proof of why you ought not compute an arbitrary human. For just this last part, see <a href="proof.pdf">this paper.</a>
+        </ul>
+    <br>
+<li><a href="https://arxiv.org/pdf/1805.08347v2">How to Solve Moral Conundrums with Computability Theory</a> (2018)
+</li>
+<ul>
+This paper is about uncomputability as freedom. It defines uncomputability as good, from which follows that computing what is uncomputable is bad. The paper doesn't mention Badiou, but its formal structure is almost identical with his: freedom is uncomputable, just as the Event is undecidable.
+            <div class='foldable'>
+            <button>▼ Notes</button>
+            <div class="content">
+            The conclusion is wrong. I said that once there is uncomputable AI, the human race might as well go extinct. I don't think this is true. First, I don't think there can be uncomputable AI. Second, even if there were, I think the human race shouldn't go extinct for important sentimental reasons.
+            </div>
+            </div>
+</ul>
+    <br>
+            <li><a href="https://tropicsofmeta.com/2020/02/23/parasite-is-the-first-sexual-critique-of-capitalism/"><i>Parasite</i> Is the First Sexual Critique of Capitalism</a> (2020)</li>
+<ul>
+            I analyze Bong's <i>Parasite</i> using Hegel and Lacan until they break.
+</ul>
+    <br>
+            <li><a href="Phenomenology of Being-Racist.pdf">The Phenomenology of Being-Racist</a> (2020)</li>
+<ul>
+            I pose the question, <i>what is it like to be racist?</i>, with Sara Ahmed in conversation with Charles Mills. I consider the possibility that racists are nowhere, cannot experience, and do not die.
+</ul>
+    <br>
+            <li><a href="https://centreforexperimentalontology.com/wp-content/uploads/2021/03/acceleration-and-time.pdf">Acceleration and Time</a> (2021)</li>
+<ul>
+            A critique of Reza Negarestani's <i>Intelligence and Spirit</i> with Fred Moten's <i>The Universal Machine</i> as foil.
+</ul>
+    <br>
+            <li><a href="The End of the World Has Already Happened.pdf">The End of the World Has Already Happened</a> (2022)</li>
+<ul>
+            A schizoanalytic metaphysics of racial capitalism.
+</ul>
+            
+</ul>
+</div>
+</main>
+
+  <script>
+    document.querySelectorAll(".foldable").forEach(fold => {
+  const btn = fold.querySelector("button");
+  const content = fold.querySelector(".content");
+
+  btn.addEventListener("click", () => {
+    content.classList.toggle("open");
+  });
+});
+  </script>
+</body>
+</html>

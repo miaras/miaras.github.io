@@ -1,0 +1,93 @@
+
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-break: keep-all;      
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  background: #121212;
+  z-index: 100;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+body {
+  background-color: #121212; /* nice neutral blackish */
+  color: #e0e0e0; /* light gray for text */
+}
+
+ul {
+    line-height: 1.2;
+}
+
+main {
+    padding-top: 70px;
+}
+
+header a {
+  text-decoration: none;
+}
+
+a {
+  color: #ffb74d; /* warm amber */
+  text-decoration: none;
+}
+a:hover {
+  color: #ffe082; /* lighter golden */
+  text-decoration: none;
+}
+
+.window {
+  font-family: sans-serif;
+  max-width: 31rem;
+  font-size:1rem;
+  margin: auto;
+  padding: 0rem 1.5rem;
+}
+
+.japanese {
+    writing-mode: vertical-rl;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.centered_col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height:90vh;
+}
+
+
+.foldable button {
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: #e0e0e0; 
+  cursor: pointer;
+}
+
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.content.open {
+  max-height: 500px; /* large enough to fit content */
+}
