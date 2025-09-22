@@ -49,6 +49,8 @@ a:hover {
 }
 
 .window {
+  display: flex;
+  flex-direction: column;
   font-family: "Pretendard", sans-serif;
   max-width: 31rem;
   font-size:1rem;
@@ -64,7 +66,8 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    padding-top: 70px;
+    height: 60vh;
 }
 
 .centered_col {
@@ -112,4 +115,14 @@ transition: opacity 0.3s ease;
 .caption {
     display: flex;
     justify-content: center;
+}
+img.portrait {
+  width: 500px;
+  max-width: 100%; /* so it doesn’t explode outside tiny screens */
+}
+
+@media (max-width: 768px) {
+  img.responsive {
+    width: 300px;
+  }
 }
