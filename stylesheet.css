@@ -117,12 +117,8 @@ transition: opacity 0.3s ease;
     justify-content: center;
 }
 img.portrait {
+  padding-top: 70px;   
   width: 500px;
   max-width: 100%; /* so it doesn’t explode outside tiny screens */
 }
 
-@media (max-width: 768px) {
-  img.responsive {
-    width: 300px;
-  }
-}
