@@ -1,30 +1,59 @@
-
 pre {
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-break: keep-all;      
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-break: keep-all;
 }
 
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  background: #121212;
-  z-index: 100;
-  padding: 1rem;
-  font-family: "Pretendard", sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #121212;
+    z-index: 100;
+    padding: 1rem;
+    font-family: "Pretendard", sans-serif;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.lang-toggle {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: 1px solid #ffb74d;
+    color: #ffb74d;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Pretendard", sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.lang-toggle:hover {
+    background: #ffb74d;
+    color: #121212;
 }
 
 body {
-  font-family: "Pretendard", sans-serif;
-  background-color: #121212; /* nice neutral blackish */
-  color: #e0e0e0; /* light gray for text */
+    font-family: "Pretendard", sans-serif;
+    background-color: #121212;
+    /* nice neutral blackish */
+    color: #e0e0e0;
+    /* light gray for text */
 }
 
 ul {
@@ -36,26 +65,29 @@ main {
 }
 
 header a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 a {
-  color: #ffb74d; /* warm amber */
-  text-decoration: none;
+    color: #ffb74d;
+    /* warm amber */
+    text-decoration: none;
 }
+
 a:hover {
-  color: #ffe082; /* lighter golden */
-  text-decoration: none;
+    color: #ffe082;
+    /* lighter golden */
+    text-decoration: none;
 }
 
 .window {
-  display: flex;
-  flex-direction: column;
-  font-family: "Pretendard", sans-serif;
-  max-width: 31rem;
-  font-size:1rem;
-  margin: auto;
-  padding: 0rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    font-family: "Pretendard", sans-serif;
+    max-width: 31rem;
+    font-size: 1rem;
+    margin: auto;
+    padding: 0rem 1.5rem;
 }
 
 .japanese {
@@ -74,51 +106,80 @@ a:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height:90vh;
+    height: 90vh;
 }
 
-
 .foldable button {
-  background: none;
-  border: none;
-  font-weight: bold;
-  color: #e0e0e0; 
-  cursor: pointer;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #e0e0e0;
+    cursor: pointer;
 }
 
 .content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
 }
 
 .content.open {
-  max-height: 500px; /* large enough to fit content */
+    max-height: 500px;
+    /* large enough to fit content */
 }
+
 .gallery {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 2rem;
-max-width: 800px;
-margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
 }
+
 .gallery img {
-width: 100%;
-max-width: 700px;
-height: auto;
-margin-bottom: 2rem;
-border: 1px solid #eee;
-border-radius: 4px;
-transition: opacity 0.3s ease;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin-bottom: 2rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: opacity 0.3s ease;
 }
+
 .caption {
     display: flex;
     justify-content: center;
 }
+
 img.portrait {
-  padding-top: 70px;   
-  width: 500px;
-  max-width: 100%; /* so it doesn’t explode outside tiny screens */
+    padding-top: 70px;
+    width: 500px;
+    max-width: 100%;
+    /* so it doesn't explode outside tiny screens */
 }
 
+.hidden {
+    display: none !important;
+}
+
+
+/* Mobile responsive adjustments */
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+    .lang-toggle {
+        position: static;
+        align-self: center;
+    }
+    main {
+        padding-top: 120px;
+    }
+    .centered {
+        padding-top: 120px;
+    }
+}

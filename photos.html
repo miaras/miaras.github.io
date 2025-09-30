@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Photos</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="stylesheet.css">
     <script src="script.js" defer></script>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
-  <header>
-    <a href="index.html">Home</a>
-    <a href="writing.html">Writing</a>
-    <a href="photos.html">Photos</a>
-    <a href="contact.html">Contact</a>
-  </header>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
 </head>
+
 <body>
-<main>
-<div class='caption'>
-<h3>Photoshoot, Oakland Chinatown (2021)</h3>
-</div>
-<div class='gallery'>
-<img src='oakland_photoshoot/1.jpg'>
-<img src='oakland_photoshoot/2.jpg'>
-<img src='oakland_photoshoot/3.jpg'>
-<img src='oakland_photoshoot/4.jpg'>
-<img src='oakland_photoshoot/5.jpg'>
-<img src='oakland_photoshoot/6.jpg'>
-<img src='oakland_photoshoot/7.jpg'>
-<img src='oakland_photoshoot/8.jpg'>
-</div>
-</main>
+    <header>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="writing.html">Writing</a>
+            <a href="photos.html">Photos</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <button id="lang-toggle" class="lang-toggle">한국어</button>
+    </header>
+    <main>
+        <div class='caption'>
+            <div id="english">
+                <h3>Photoshoot, Oakland Chinatown (2021)</h3>
+            </div>
+            <div id="korean" class="hidden">
+                <h3>오클랜드 차이나타운 사진 촬영 (2021)</h3>
+            </div>
+        </div>
+        <div class='gallery'>
+            <img src='oakland_photoshoot/1.jpg'>
+            <img src='oakland_photoshoot/2.jpg'>
+            <img src='oakland_photoshoot/3.jpg'>
+            <img src='oakland_photoshoot/4.jpg'>
+            <img src='oakland_photoshoot/5.jpg'>
+            <img src='oakland_photoshoot/6.jpg'>
+            <img src='oakland_photoshoot/7.jpg'>
+            <img src='oakland_photoshoot/8.jpg'>
+        </div>
+    </main>
 </body>
+
 </html>

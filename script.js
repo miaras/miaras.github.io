@@ -40,3 +40,49 @@ function copyText(id) {
     const text = document.getElementById(id);
     navigator.clipboard.writeText(text.innerText.replace("Copy", "").replace("Back", ""))
 }
+
+// Language toggle functionality with persistence
+function initLanguageToggle() {
+    const langToggle = document.getElementById('lang-toggle');
+    const englishContent = document.getElementById('english');
+    const koreanContent = document.getElementById('korean');
+
+    // Read saved preference; default to English
+    let currentLang = localStorage.getItem('preferredLang') || 'en';
+
+    function applyLanguage(lang) {
+        // Update content visibility when present on the page
+        if (englishContent && koreanContent) {
+            if (lang === 'ko') {
+                englishContent.classList.add('hidden');
+                koreanContent.classList.remove('hidden');
+            } else {
+                koreanContent.classList.add('hidden');
+                englishContent.classList.remove('hidden');
+            }
+        }
+        // Update toggle label when present on the page
+        if (langToggle) {
+            langToggle.textContent = (lang === 'ko') ? 'English' : '한국어';
+        }
+    }
+
+    // Initialize UI from saved preference
+    applyLanguage(currentLang);
+
+    // Hook up click handler if toggle exists
+    if (langToggle) {
+        langToggle.addEventListener('click', () => {
+            currentLang = (currentLang === 'en') ? 'ko' : 'en';
+            localStorage.setItem('preferredLang', currentLang);
+            applyLanguage(currentLang);
+        });
+    }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLanguageToggle);
+} else {
+    initLanguageToggle();
+}
