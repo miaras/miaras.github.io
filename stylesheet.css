@@ -99,7 +99,6 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 70px;
     height: 60vh;
 }
 
@@ -154,8 +153,6 @@ a:hover {
 }
 
 img.portrait {
-    padding-top: 70px;
-    width: 500px;
     max-width: 100%;
     /* so it doesn't explode outside tiny screens */
 }
@@ -178,9 +175,6 @@ img.portrait {
         align-self: center;
     }
     main {
-        padding-top: 120px;
-    }
-    .centered {
         padding-top: 120px;
     }
 }
