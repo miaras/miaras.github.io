@@ -88,7 +88,8 @@ a:hover {
     max-width: 31rem;
     font-size: 1rem;
     margin: auto;
-    padding: 1.5rem 0rem;
+    padding: 1.5rem 0.5rem;
+    padding-top: 4rem;
 }
 
 .japanese {
@@ -174,9 +175,6 @@ img.portrait {
     .lang-toggle {
         position: static;
         align-self: center;
-    }
-    main {
-        padding-top: 120px;
     }
 }
 #table_of_contents {
