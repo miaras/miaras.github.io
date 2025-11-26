@@ -30,7 +30,7 @@
 </head>
 <body>
     <div class="window">
-        <p id="english">
+        <div id="english">
             I'm Miara Sung, a Korean/American cultural theorist living in Amsterdam. I think about langauge, racial capitalism, and the divine. I've used four other names: Jongmin Jerome Baek, Min Baek, Mina Baek, and Miara S Baek.<br><br>
             I write philosophy and cultural theory. At Berkeley, I founded Philosophy of Computation at Berkeley and taught a <a href="https://pocab.wordpress.com/decal/">course</a> on philosophy of computation (<a href="The Poetry of Computer Science, the Computer Science of Poetry.pdf">textbook</a>). My most recent publication is <a href="https://centreforexperimentalontology.com/wp-content/uploads/2021/03/acceleration-and-time.pdf"><i>Acceleration and Time</i></a>, where I build on Fred Moten to advance a theory of the universal machine as an aesthetic of blackness. Recently I've begun to get involved with <a href="https://mimbres.org">Mimbres School</a>, an intellectual community orientated around studying money empirically, in an anti-economics, anti-philosophy, anti-disciplinary way.<br><br>
             I've done poetry readings at <a href="https://seattlereviewofbooks.com/notes/2019/10/21/event-of-the-week-lit-crawl-returns-bigger-than-ever/">Seattle Lit Crawl</a>, Oakland EM Wolfman, New Orleans, and was invited to read at <a href="https://hugohouse.org/event/kundiman-showcase/">Hugo House</a>. My poetry has appeared on a number of magazines, and is forthcoming in <i>Abolishing Capitalist Totality</i>, a collection by Archive Books.<br><br>
@@ -46,8 +46,8 @@
             A long time ago, I made the indie game <a href="https://en.wikipedia.org/wiki/6180_the_moon">6180 the moon</a> with some friends.
         </div>
     </div>
-    </p>
-    <p id="korean" class="hidden">
+    </div>
+    <div id="korean" class="hidden">
             암스테르담에 살고 있는 한국인/미국인 문화 이론가 성민아입니다. 언어, 인종자본주의, 그리고 신에 대해 생각합니다.<br><br>
             철학, 문화 이론 관련 글을 씁니다. 버클리에 있을때는 버클리 전산 철학 모임 (Philosophy of Computation at Berkeley)을 창립했고, 전산 철학에 대한 <a href="https://pocab.wordpress.com/decal/">수업</a>을 가르쳤습니다 (<a href="The Poetry of Computer Science, the Computer Science of Poetry.pdf">집필한 책</a>). 가장 최근에 출판한 글은 <a href="https://centreforexperimentalontology.com/wp-content/uploads/2021/03/acceleration-and-time.pdf"><i>Acceleration and Time</i></a> (가속과 시간)으로, 프레드 모튼의 이론을 토대로 범용 (튜링) 기계를 흑(인)성의 미학으로 이해하는 이론을 시도했습니다. 최근 들어 <a href="https://mimbres.org">Mimbres School</a> 에서 수학하며 프로그래밍도 해 주고 있습니다. 돈을 실증적 문제로 연구하는 것을 핵심 과제로 삼으며, 반-경제학적, 반-철학적, 반-과목적 (anti-disciplinary)으로 연구하는 활발한 학구적 공동체입니다. 가입하세요!<br><br>
             <a href="https://seattlereviewofbooks.com/notes/2019/10/21/event-of-the-week-lit-crawl-returns-bigger-than-ever/">시애틀 Lit Crawl</a>, 오클랜드 EM Wolfman, 뉴올리언스에서 시를 읽었고 <a href="https://hugohouse.org/event/kundiman-showcase/">휴고 하우스 낭송회</a>에 초대받았습니다. 여러 매거진에 시를 출판했고, Archive Books의 책 <i>Abolishing Capitalist Totality</i> (자본주의 전체성을 폐지하라)에 시가 실릴 예정입니다.<br><br>
@@ -63,7 +63,17 @@
             오래 전, 친구들과 인디게임 <a href="https://en.wikipedia.org/wiki/6180_the_moon">6180 the moon</a>을 만들었습니다.
             </div>
         </div>
-    </p>
+    </div>
 </div>
+    <script>
+        document.querySelectorAll(".foldable").forEach(fold => {
+            const btn = fold.querySelector("button");
+            const content = fold.querySelector(".content");
+
+            btn.addEventListener("click", () => {
+                content.classList.toggle("open");
+            });
+        });
+    </script>
 </body>
 </html>
