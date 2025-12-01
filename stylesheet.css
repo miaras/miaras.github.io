@@ -126,7 +126,7 @@ a:hover {
 }
 
 .content.open {
-    max-height: 1200px;
+    max-height: 3200px;
     /* large enough to fit content */
 }
 
