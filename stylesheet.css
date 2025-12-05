@@ -92,7 +92,7 @@ a:hover {
     padding-top: 6rem;
 }
 
-.window_notoppadding {
+.window_no_top_padding {
     display: flex;
     flex-direction: column;
     font-family: "Pretendard", sans-serif;
