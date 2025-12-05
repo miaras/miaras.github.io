@@ -92,6 +92,16 @@ a:hover {
     padding-top: 6rem;
 }
 
+.window_notoppadding {
+    display: flex;
+    flex-direction: column;
+    font-family: "Pretendard", sans-serif;
+    max-width: 31rem;
+    font-size: 1rem;
+    margin: auto;
+    padding: 1.5rem 0.5rem;
+}
+
 .japanese {
     writing-mode: vertical-rl;
 }
