@@ -199,3 +199,10 @@ img.portrait {
     flex-direction: column;
     gap: 1rem;
 }
+
+#korean {
+    word-break: keep-all;
+    overflow-wrap: break-word;   /* modern */
+    word-wrap: break-word;    /* legacy */
+
+}
