@@ -320,8 +320,8 @@ img.portrait {
   }
   
   .nav-links {
-    gap: 1.2rem;
-    flex-wrap: wrap;
+    gap: 1rem;
+    flex-wrap: nowrap;
     justify-content: center;
   }
   
