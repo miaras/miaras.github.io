@@ -310,6 +310,9 @@ img.portrait {
   .window {
     padding-top: 7rem;
   }
+  .centered p {
+    padding-top: 10rem;
+  }
 }
 
 @media (max-width: 600px) {
