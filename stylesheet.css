@@ -149,7 +149,7 @@ header {
   justify-content: center;
   align-items: center;
   height: 90vh; /* Adjust for pure center */
-  text-align: center;
+  text-align: begin;
   padding: 0 1rem;
 }
 
