@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
@@ -19,22 +19,26 @@
     <script src="script.js" defer></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
-    <header>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-<a href="bio.html">Bio</a>
-            <a href="writing.html">Writing</a>
-            <a href="contact.html">Contact</a>
-            <a href="miara-sung-cv.pdf">CV</a>
-        </div>
-        <button id="lang-toggle" class="lang-toggle">한국어</button>
-    </header>
 </head>
 
-<body>
-    <div class="centered">
-        Email: miarasung at gmail dot com</a><br><br>
-    </div>
+<body class="contact-page">
+    <header>
+        <nav class="nav-links" aria-label="Primary navigation">
+            <a href="index.html">Home</a>
+            <a href="bio.html">Bio</a>
+            <a href="writing.html">Writing</a>
+            <a href="contact.html" aria-current="page">Contact</a>
+            <a href="miara-sung-cv.pdf">CV</a>
+        </nav>
+        <button id="lang-toggle" class="lang-toggle" type="button">한국어</button>
+    </header>
+    <main class="contact-field">
+        <div class="contact-void" aria-hidden="true"></div>
+        <h1 class="contact-title">Contact</h1>
+        <div class="contact-address">
+            <p>miarasung at gmail dot com</p>
+        </div>
+    </main>
 </body>
 
 </html>

@@ -1,48 +1,48 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-EGVBMEVZBH');
-    </script>
-    <title>Miara Sung</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Miara Sung</title>
     <link rel="stylesheet" href="stylesheet.css">
     <script src="script.js" defer></script>
-    <!-- Google tag (gtag.js) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-EGVBMEVZBH');
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
-    <header>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="bio.html">Bio</a>
-            <a href="writing.html">Writing</a>
-            <a href="contact.html">Contact</a>
-            <a href="miara-sung-cv.pdf">CV</a>
-        </div>
-        <button id="lang-toggle" class="lang-toggle">한국어</button>
-    </header>
 </head>
-
-<body>
-    <div class="window_no_top_padding">
-        <div class="centered">
-            <p id="english">
-                Miara Sung is a philosopher living in Korea. They are writing a monograph, <a href="madness-and-consent.pdf"><i>Madness and Consent</i></a>, a syncretic work that thinks with mathematical logic for a metaphysics of flesh and sexual violence. <br><br>
-See more in <a href="bio.html">Bio.</a>
-<p id="korean" class="hidden">
-                성민아는 한국에 거주하는 철학자다. 현재 『광기와 동의 (<a href="madness-and-consent.pdf">Madness and Consent</a>)』를 집필하고 있다. 수리논리학을 이용해 살과 성폭력을 사유하는 형이상학이다.
-            </p>
+<body class="home-page">
+    <main class="dossier-home">
+        <header class="dossier-nav" aria-label="Primary navigation">
+            <nav class="nav-links">
+                <a href="index.html" aria-current="page">Home</a>
+                <a href="bio.html">Bio</a>
+                <a href="writing.html">Writing</a>
+                <a href="contact.html">Contact</a>
+                <a href="miara-sung-cv.pdf">CV</a>
+            </nav>
+            <button id="lang-toggle" class="lang-toggle" type="button">한국어</button>
+        </header>
+        <section id="home" class="dossier-field" aria-labelledby="site-title">
+            <div class="dossier-void" aria-hidden="true"></div>
+            <h1 id="site-title" class="dossier-name"><span>Miara Sung</span></h1>
+            <div class="dossier-copy">
+                <div id="english" class="language-panel dossier-copy-grid">
+                    <p>Miara Sung is a philosopher living in Korea.</p>
+                    <p>They are writing a monograph, <a href="madness-and-consent.pdf"><i>Madness and Consent</i></a>, a syncretic work that thinks with mathematical logic for a metaphysics of flesh and sexual violence. <br><br>See more in <a href="bio.html">Bio.</a></p>
+                </div>
+                <p id="korean" class="language-panel hidden">성민아는 한국에 거주하는 철학자다. 현재 『광기와 동의 (<a href="madness-and-consent.pdf">Madness and Consent</a>)』를 집필하고 있다. 수리논리학을 이용해 살과 성폭력을 사유하는 형이상학이다.</p>
+            </div>
+        </section>
+        <div class="dossier-sections">
+            <section id="bio" class="dossier-section" data-include="bio.html"></section>
+            <section id="writing" class="dossier-section" data-include="writing.html"></section>
+            <section id="contact" class="dossier-section" data-include="contact.html"></section>
         </div>
-        <br><br>
-    </div>
+    </main>
 </body>
-
 </html>

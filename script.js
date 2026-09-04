@@ -44,23 +44,13 @@ function copyText(id) {
 // Language toggle functionality with persistence
 function initLanguageToggle() {
     const langToggle = document.getElementById('lang-toggle');
-    const englishContent = document.getElementById('english');
-    const koreanContent = document.getElementById('korean');
 
     // Read saved preference; default to English
     let currentLang = localStorage.getItem('preferredLang') || 'en';
 
     function applyLanguage(lang) {
-        // Update content visibility when present on the page
-        if (englishContent && koreanContent) {
-            if (lang === 'ko') {
-                englishContent.classList.add('hidden');
-                koreanContent.classList.remove('hidden');
-            } else {
-                koreanContent.classList.add('hidden');
-                englishContent.classList.remove('hidden');
-            }
-        }
+        document.querySelectorAll('[id="english"]').forEach(content => content.classList.toggle('hidden', lang === 'ko'));
+        document.querySelectorAll('[id="korean"]').forEach(content => content.classList.toggle('hidden', lang !== 'ko'));
         // Update toggle label when present on the page
         if (langToggle) {
             langToggle.textContent = (lang === 'ko') ? 'English' : '한국어';
@@ -80,9 +70,42 @@ function initLanguageToggle() {
     }
 }
 
+function initActiveNavigation() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        const linkPage = link.pathname.split('/').pop() || 'index.html';
+        if (linkPage === currentPage && link.getAttribute('href') !== 'miara-sung-cv.pdf') {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
+    });
+}
+
+async function includeSections() {
+    const targets = document.querySelectorAll('[data-include]');
+    await Promise.all(Array.from(targets).map(async target => {
+        const response = await fetch(target.dataset.include);
+        if (!response.ok) return;
+        const source = await response.text();
+        const parsed = new DOMParser().parseFromString(source, 'text/html');
+        const content = parsed.querySelector('.window, .centered, .centered_col, .window_no_top_padding');
+        if (content) target.append(...content.childNodes);
+    }));
+    initLanguageToggle();
+    document.querySelectorAll('.foldable').forEach(fold => {
+        const button = fold.querySelector('button');
+        const content = fold.querySelector('.content');
+        if (button && content) button.addEventListener('click', () => content.classList.toggle('open'));
+    });
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLanguageToggle);
+    document.addEventListener('DOMContentLoaded', () => { initActiveNavigation(); initLanguageToggle(); includeSections(); });
 } else {
+    initActiveNavigation();
     initLanguageToggle();
+    includeSections();
 }
