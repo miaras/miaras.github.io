@@ -39,7 +39,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .dossier-section > .window,
 .dossier-section > .centered,
 .dossier-section > .centered_col,
-.dossier-section > .window_no_top_padding { width: 100%; min-height: auto; }
+.dossier-section > .window_no_top_padding,
+.dossier-section > .contact-field { width: 100%; min-height: auto; }
 .dossier-section .window { padding-block: clamp(3rem, 7vw, 7rem); }
 .dossier-section li { font-size: clamp(1rem, 1.25vw, 1.25rem); }
 .dossier-section li > ul, .dossier-section li + ul { font-size: clamp(.95rem, 1.08vw, 1.08rem); line-height: 1.5; }

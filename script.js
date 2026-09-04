@@ -90,7 +90,7 @@ async function includeSections() {
         if (!response.ok) return;
         const source = await response.text();
         const parsed = new DOMParser().parseFromString(source, 'text/html');
-        const content = parsed.querySelector('.window, .centered, .centered_col, .window_no_top_padding');
+        const content = parsed.querySelector('.window, .centered, .centered_col, .window_no_top_padding, .contact-field');
         if (content) target.append(...content.childNodes);
     }));
     initLanguageToggle();
