@@ -94,10 +94,25 @@ async function includeSections() {
         if (content) target.append(...content.childNodes);
     }));
     initLanguageToggle();
-    document.querySelectorAll('.foldable').forEach(fold => {
+    initFoldables();
+}
+
+function initFoldables() {
+    document.querySelectorAll('.foldable').forEach((fold, index) => {
         const button = fold.querySelector('button');
         const content = fold.querySelector('.content');
-        if (button && content) button.addEventListener('click', () => content.classList.toggle('open'));
+        if (!button || !content || button.dataset.foldableInitialized === 'true') return;
+
+        if (!content.id) content.id = `foldable-content-${index + 1}`;
+        button.type = 'button';
+        button.setAttribute('aria-controls', content.id);
+        button.setAttribute('aria-expanded', content.classList.contains('open').toString());
+        button.dataset.foldableInitialized = 'true';
+
+        button.addEventListener('click', () => {
+            const isOpen = content.classList.toggle('open');
+            button.setAttribute('aria-expanded', isOpen.toString());
+        });
     });
 }
 
