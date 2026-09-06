@@ -144,6 +144,65 @@ pre { max-width: 80ch; white-space: pre-wrap; font: inherit; }
 .content.open { display: block; }
 img.portrait { max-width: 100%; filter: grayscale(1) contrast(1.08); }
 
+/* Philosophy of Computation surface */
+.poc-hero {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  min-height: 68svh;
+  border-bottom: var(--rule);
+}
+.poc-rail {
+  display: flex;
+  align-items: flex-start;
+  border-right: var(--rule);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  text-transform: uppercase;
+}
+.poc-title {
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  background: var(--ink);
+  color: var(--paper);
+}
+.poc-title h1 {
+  max-width: 8ch;
+  font-size: clamp(5rem, 14vw, 14rem);
+  line-height: .72;
+  text-transform: uppercase;
+}
+.poc-detail {
+  display: grid;
+  grid-template-columns: minmax(14rem, 32%) minmax(0, 1fr);
+  border-bottom: var(--rule);
+}
+.poc-detail > * { padding: clamp(1.5rem, 4vw, 4rem); }
+.poc-label {
+  border-right: var(--rule);
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  letter-spacing: -.04em;
+  line-height: .96;
+}
+.poc-copy {
+  max-width: 68ch;
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+}
+.poc-copy p { margin: 0 0 2rem; }
+.poc-links { display: flex; flex-wrap: wrap; gap: .75rem 2rem; }
+.poc-links a { font-weight: 700; }
+
+@media (max-width: 760px) {
+  .poc-hero { grid-template-columns: 3rem minmax(0, 1fr); min-height: 56svh; }
+  .poc-rail { padding: 1rem .75rem; }
+  .poc-title { padding: 1.5rem 1rem; }
+  .poc-title h1 { font-size: clamp(4rem, 18vw, 7rem); }
+  .poc-detail { display: block; }
+  .poc-label { border-right: 0; border-bottom: var(--rule); }
+}
+
 /* Contact surface */
 .contact-field {
   min-height: calc(100svh - 4.25rem);
