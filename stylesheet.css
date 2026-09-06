@@ -129,6 +129,8 @@ head > header .lang-toggle { min-width: 8rem; }
 .centered_col > * { max-width: 70ch; }
 
 .window > div:first-child,
+.bio-copy,
+.writing-primary,
 .centered > p:first-child { font-size: clamp(1.35rem, 2.2vw, 2.25rem); line-height: 1.2; letter-spacing: -0.03em; }
 
 h1, h2, h3, h4, h5, h6 { margin: 0; font: 700 inherit/1 var(--font-sans); letter-spacing: -0.035em; }
@@ -249,7 +251,7 @@ img.portrait { max-width: 100%; filter: grayscale(1) contrast(1.08); }
   body:not(.home-page) > header .lang-toggle,
   head > header .lang-toggle { width: 100%; min-height: 3.25rem; border-top: var(--rule); border-right: 0; }
   .window, .centered, .centered_col, .window_no_top_padding { padding: 2rem 1rem 4rem; }
-  .window > div:first-child, .centered > p:first-child { font-size: clamp(1.3rem, 6vw, 1.75rem); }
+  .window > div:first-child, .bio-copy, .writing-primary, .centered > p:first-child { font-size: clamp(1.3rem, 6vw, 1.75rem); }
   h3 { font-size: clamp(2.25rem, 14vw, 4.5rem); }
   .contact-field { min-height: calc(100svh - 7rem); grid-template-rows: 15svh 28svh auto; }
   .contact-title { padding: 0 1rem; font-size: clamp(5.25rem, 24vw, 8.5rem); letter-spacing: -0.075em; }
